@@ -72,9 +72,8 @@ char *getlink(char *id)
 	char *content=gethtml(url);
 	free(url);
 	if (content == NULL) return NULL;
-	
 	char *begin="url_encoded_fmt_stream_map=url\%3Dh";
-	char *end="itag%3D45%2Curl";
+	char *end="itag\%3D";
 	char *start=strstr(content, begin);
 	if (start == NULL || start+1 == '\0') return NULL;
 	start+=strlen(begin);
