@@ -1,6 +1,6 @@
 Purpose
 
-This utility was primarily written as an exercise. It was inspired by quvi, a much larger utility (and library) for extracting media urls from various flash video websites. Unlike quvi this utility only supports (and at the moment only plans to support) youtube links. Futhermoe it only has one dependency.
+This utility was primarily written as an exercise. It was inspired by quvi, a much larger utility (and library) for extracting media urls from various flash video websites. Unlike quvi this utility only supports (and at the moment only plans to support) youtube links. Futhermore it only has one dependency.
 
 Compilation/Installation
 
