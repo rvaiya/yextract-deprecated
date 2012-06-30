@@ -1,0 +1,15 @@
+Purpose
+
+This utility was primarily written as an exercise. It was inspired by quvi, a much larger utility (and library) for extracting media urls from various flash video websites. Unlike quvi this utility only supports (and at the moment only plans to support) youtube links. Futhermoe it only has one dependency.
+
+Compilation/Installation
+
+To compile simply type "make", to install simply type "make install"
+
+Dependencies
+
+Libcurl is the only dependency required for successful compilation
+
+License
+
+This program is licensed under the GNU GPL V3. You are free to modify, distribute and copy it provided you release your modifications under the same license (a copy of which has been included with the source). 

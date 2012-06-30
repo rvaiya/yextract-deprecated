@@ -1,0 +1,1 @@
+char *gethtml(char *url);
