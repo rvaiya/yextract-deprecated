@@ -30,38 +30,60 @@ char *getid(char *url)
 	return result;
 }
 
-void substr(char *orig, char *sub, char *repl) //Inplace, modifies memory orig points to (be careful)
+int strnoc(char *text, const char *sub) 
 {
-	const size_t lrepl=strlen(repl);
-	const size_t lsub=strlen(sub);
-	char *occurrence;
-	while ((occurrence=strstr(orig, sub)) != NULL) {
-		memcpy(occurrence, repl, lrepl);
-		memmove(occurrence+lrepl, occurrence+lsub, strlen(occurrence+lsub)+1);	
-		orig=occurrence+1;
+	int i=0;
+	char *temp=text;
+	while((temp=strstr(temp, sub)) != NULL)  { i++; temp++; }
+	return i;
+}
+
+int substr(char **text, const char *sub, const char *repl) 
+{
+	int l_repl, l_sub;
+	l_repl=strlen(repl);
+	l_sub=strlen(sub);
+	char *match;
+	if (l_repl > l_sub) {
+		int nsize=(l_repl-l_sub)*strnoc(*text, sub)+strlen(*text) + 1;
+		*text=realloc(*text, sizeof(char)*nsize);
+		match=*text;
+		while((match=strstr(match, sub)) != NULL) {
+			memmove(match+l_repl, match+l_sub, strlen(match+l_sub)+1);
+			memcpy(match, repl, l_repl);
+			match+=1; 
+		}
+
+	} else {
+		match=*text;
+		while((match=strstr(match, sub)) != NULL) {
+			memcpy(match, repl, strlen(repl));
+			memmove(match+l_repl, match+l_sub, strlen(match+l_sub) + 1);
+		}
 	}
 }
 
 
 void normalize(char *url) //Inplace modification
 {
-	substr(url, "\%3A", ":");
-	substr(url, "\%26", "&");
-	substr(url, "\%2F", "/");
-	substr(url, "\%3D", "=");
-	substr(url, "\%3F", "?");
-	substr(url, "\%3B", ";");
-	substr(url, "\%2C", ",");
-	substr(url, "\%2B", ",");
-	substr(url, "\%252B", "+");
-	substr(url, "\%252C", ",");
-	substr(url, "\%253B", ";");
-	substr(url, "\%253A", ":");
-	substr(url, "\%2526", "&");
-	substr(url, "\%252F", "/");
-	substr(url, "\%253D", "=");
-	substr(url, "\%253F", "?");
-	substr(url, "\%25252C", ",");
+	substr(&url, "\%3A", ":");
+	substr(&url, "\%26", "&");
+	substr(&url, "\%2F", "/");
+	substr(&url, "\%3D", "=");
+	substr(&url, "\%3F", "?");
+	substr(&url, "\%3B", ";");
+	substr(&url, "\%2C", ",");
+	substr(&url, "\%2B", ",");
+	substr(&url, "\%252B", "+");
+	substr(&url, "\%252C", ",");
+	substr(&url, "\%253B", ";");
+	substr(&url, "\%253A", ":");
+	substr(&url, "\%2526", "&");
+	substr(&url, "\%252F", "/");
+	substr(&url, "\%253D", "=");
+	substr(&url, "\%253F", "?");
+	substr(&url, "\%25252C", ",");
+	substr(&url, "sig", "signature");
 }
 
 char *getlink(char *id)
@@ -72,7 +94,7 @@ char *getlink(char *id)
 	char *content=gethtml(url);
 	free(url);
 	if (content == NULL) return NULL;
-	char *begin="url_encoded_fmt_stream_map=url\%3Dh";
+	char *begin="url_encoded_fmt_stream_map=itag\%3D45\%26url\%3Dh";
 	char *end="itag\%3D";
 	char *start=strstr(content, begin);
 	if (start == NULL || start+1 == '\0') return NULL;
