@@ -64,26 +64,26 @@ int substr(char **text, const char *sub, const char *repl)
 }
 
 
-void normalize(char *url) //Inplace modification
+void normalize(char **url) //Inplace modification
 {
-	substr(&url, "\%3A", ":");
-	substr(&url, "\%26", "&");
-	substr(&url, "\%2F", "/");
-	substr(&url, "\%3D", "=");
-	substr(&url, "\%3F", "?");
-	substr(&url, "\%3B", ";");
-	substr(&url, "\%2C", ",");
-	substr(&url, "\%2B", ",");
-	substr(&url, "\%252B", "+");
-	substr(&url, "\%252C", ",");
-	substr(&url, "\%253B", ";");
-	substr(&url, "\%253A", ":");
-	substr(&url, "\%2526", "&");
-	substr(&url, "\%252F", "/");
-	substr(&url, "\%253D", "=");
-	substr(&url, "\%253F", "?");
-	substr(&url, "\%25252C", ",");
-	substr(&url, "sig", "signature");
+	substr(url, "\%3A", ":");
+	substr(url, "\%26", "&");
+	substr(url, "\%2F", "/");
+	substr(url, "\%3D", "=");
+	substr(url, "\%3F", "?");
+	substr(url, "\%3B", ";");
+	substr(url, "\%2C", ",");
+	substr(url, "\%2B", ",");
+	substr(url, "\%252B", "+");
+	substr(url, "\%252C", ",");
+	substr(url, "\%253B", ";");
+	substr(url, "\%253A", ":");
+	substr(url, "\%2526", "&");
+	substr(url, "\%252F", "/");
+	substr(url, "\%253D", "=");
+	substr(url, "\%253F", "?");
+	substr(url, "\%25252C", ",");
+	substr(url, "sig", "signature");
 }
 
 char *getlink(char *id)
@@ -94,7 +94,7 @@ char *getlink(char *id)
 	char *content=gethtml(url);
 	free(url);
 	if (content == NULL) return NULL;
-	char *begin="url_encoded_fmt_stream_map=itag\%3D45\%26url\%3Dh";
+	char *begin="url_encoded_fmt_stream_map=itag\%3D46\%26url\%3Dh";
 	char *end="itag\%3D";
 	char *start=strstr(content, begin);
 	if (start == NULL || start+1 == '\0') return NULL;
@@ -106,7 +106,7 @@ char *getlink(char *id)
 	memcpy(result+1, start, len);
 	result[0]='h';
 	result[len]='\0';
-	normalize(result);
+	normalize(&result);
 	return result;
 }
 
