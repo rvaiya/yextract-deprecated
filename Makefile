@@ -1,7 +1,7 @@
 all:
-	cc gethtml.c yextract.c -lcurl -o yextract 
+	cc aux.c gethtml.c yextract.c -lcurl -o yextract 
 debug:
-	cc -g gethtml.c yextract.c -lcurl -o yextract 
+	cc -g aux.c gethtml.c yextract.c -lcurl -o yextract 
 clean:
 	rm yextract
 install:
