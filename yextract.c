@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 		}
 	}
 	else  
-		printf("%s\n", ((struct link*)links->data[0])->quality);
+		printf("%s\n", ((struct link*)links->data[0])->url);
 	vector_delete(links);
 	return 0;
 }
