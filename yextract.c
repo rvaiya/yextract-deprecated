@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "gethtml.h"
 #include "aux.h"
 #include "vector.h"
-#define DEBUG
+//#define DEBUG
 
 struct link {
 	char *url;
@@ -109,6 +109,7 @@ Vector getlinks(char *id)
 		vector_push(result, plink);
 	} while((link=strtok(NULL, ",")));
 	free(rawlinks);
+	free(content);
 	return result;
 }
 

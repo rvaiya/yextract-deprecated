@@ -1,47 +1,35 @@
-/********************************************************************
-Author: Raheman Vaiya
-Email: r.vaiya@gmail.com
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-*********************************************************************/
 #include <curl/curl.h>
-#include <stdlib.h> 
-#include <string.h> 
+#include <stdlib.h>
+#include <string.h>
 
-static char *content=NULL;
-static int htmllen=0;
-
-int gethtml_dump(char *ptr, size_t size, size_t nmemb, void *userdata)
+size_t csize;
+char *content;
+size_t handledata( char *ptr, size_t size, size_t nmemb, void *userdata) 
 {
-	content=realloc(content, (nmemb+htmllen)*size);
-	char *temp=content+htmllen;
-	htmllen+=nmemb;
-	memcpy(temp, ptr, nmemb);
+	size_t osize=csize;
+	csize+=size*nmemb;
+	content=realloc(content, csize);
+	memcpy(content+osize-1, ptr, nmemb*size);
+	content[csize-1]='\0';
 	return nmemb*size;
 }
 
-char *gethtml(char *url) //Returns NULL if url is invalid/cannot be retrieved
+char *gethtml(char *url)
 {
 	content=NULL;
-	htmllen=0;
-	CURL *sh=curl_easy_init();
+	csize=1;
 	curl_global_init(CURL_GLOBAL_ALL);
+	CURL *sh=curl_easy_init();
 	curl_easy_setopt(sh, CURLOPT_URL, url);
-	curl_easy_setopt(sh, CURLOPT_WRITEFUNCTION, &gethtml_dump);
-	if (curl_easy_perform(sh))  {
+	curl_easy_setopt(sh, CURLOPT_WRITEFUNCTION, handledata);
+	curl_easy_setopt(sh, CURLOPT_WRITEDATA, NULL);
+	if(curl_easy_perform(sh)) {
+		free(content);
 		curl_easy_cleanup(sh);
+		curl_global_cleanup();
 		return NULL;
 	}
 	curl_easy_cleanup(sh);
-	content=realloc(content, htmllen+1);
-	content[htmllen]='\0';
+	curl_global_cleanup();
 	return content;
 }
-
