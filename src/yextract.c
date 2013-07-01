@@ -1,6 +1,6 @@
 /********************************************************************
 Author: Raheman Vaiya
-Email: r.vaiya@gmail.com
+Email: rvaiya@qplx.org
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "gethtml.h"
 #include "aux.h"
 #include "vector.h"
-//#define DEBUG
 
 struct link {
 	char *url;
@@ -126,10 +125,16 @@ int main(int argc, char **argv)
 		url=argv[1];
 
 	char *id=getparam(url, "v");
-	if (id == NULL) {
-		printf("Invalid youtube link\n");
+	if (!id) id=getbase(url);
+	if (!id) {
+		printf("Invalid URL\n");
 		return 2;
 	}
+
+	#ifdef DEBUG
+		printf("Using %s as v_id\n", id);
+	#endif
+
 	Vector links=getlinks(id);
 	free(id);
 	if (links == NULL) {

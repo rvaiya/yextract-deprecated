@@ -1,9 +1,17 @@
+SRCDIR=src
+BINDIR=bin
+BIN=yextract
+SOURCE=aux.c vector.c gethtml.c yextract.c
+CFLAGS=-lcurl -o $(BIN)
+DEBUGFLAGS=-g -DDEBUG 
+CC=gcc
+
 all:
-	cc aux.c vector.c gethtml.c yextract.c -lcurl -o yextract 
+	cd $(SRCDIR); $(CC) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
 debug:
-	cc -g aux.c vector.c gethtml.c yextract.c -lcurl -o yextract 
+	cd $(SRCDIR); $(CC) $(DEBUGFLAGS) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
 clean:
-	rm yextract
+	rm $(BINDIR)/$(BIN)
 install:
-	install yextract /usr/bin
+	install $(BINDIR)/$(BIN) /usr/bin
 

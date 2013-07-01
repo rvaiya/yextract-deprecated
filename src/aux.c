@@ -1,24 +1,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <regex.h>
 
-//Returns last character of "regex" in "string" or NULL if the pattern is not found
-char *regexend(char *string, const char *regex) 
+//Returns file/script url refers to, without params or the site itself if there
+//is no trailing slash
+
+char *getbase(char *url)
 {
-	regex_t mreg;
-	regcomp(&mreg,regex, REG_EXTENDED);
-	regmatch_t *m=malloc(sizeof(regmatch_t));
-	if (regexec(&mreg, string, 1,m,0)) {
-		regfree(&mreg);
-		free(m);
-		return NULL;
+	if(!url) return NULL;
+	char *startbase, *endbase;
+	endbase=startbase=NULL;
+	while(*url != '\0') {
+		url++;
+		if(*url == '/') {
+			startbase=url+1;
+			endbase=NULL;
+		}
+		if(!endbase && (*url == '?' || *url == '\0')) {
+			endbase=url;
+		}
 	}
-	char *match=string+m->rm_eo;
-	regfree(&mreg);
-	free(m);
-	return match;
+	if(!startbase) return NULL;
+	return strndup(startbase, endbase-startbase);
 }
+
 
 //Returns the number of occurrences of sub in text
 int strnoc(char *text, const char *sub) 
