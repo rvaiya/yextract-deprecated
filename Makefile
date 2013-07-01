@@ -7,9 +7,9 @@ DEBUGFLAGS=-g -DDEBUG
 CC=gcc
 
 all:
-	cd $(SRCDIR); $(CC) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
+	mkdir $(BINDIR);cd $(SRCDIR); $(CC) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
 debug:
-	cd $(SRCDIR); $(CC) $(DEBUGFLAGS) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
+	mkdir $(BINDIR);cd $(SRCDIR); $(CC) $(DEBUGFLAGS) $(SOURCE) $(CFLAGS) && mv $(BIN) ../$(BINDIR)
 clean:
 	rm $(BINDIR)/$(BIN)
 install:
